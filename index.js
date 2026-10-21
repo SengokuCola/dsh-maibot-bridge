@@ -3,12 +3,12 @@ import { mkdir, readFile, unlink, writeFile } from 'node:fs/promises'
 import { createServer } from 'node:net'
 import { homedir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
-import * as acp from '@deepseek-ai/dsh-acp'
 
 import { createTransport } from './transport.js'
+import { applyDesktopACP } from './desktop-acp.js'
 
 export const name = 'maibot-desktop-bridge'
-export const inject = [...new Set([...acp.inject, 'agentDefaultModel', 'workspaceController', 'sessionController'])]
+export const inject = ['agents', 'sessions', 'llm', 'attachments', 'workspaceController', 'sessionController']
 
 /** Authenticate before handing the socket to dsh's ACP implementation. */
 function authenticate(socket, token) {
@@ -45,16 +45,16 @@ export function apply(ctx, config = {}) {
     const token = randomBytes(32).toString('base64url')
     const sockets = new Set()
     const forks = new Set()
+    const owners = new Map()
     const server = createServer(socket => {
       sockets.add(socket)
       socket.on('error', error => ctx.logger.warn(`maibot bridge: ${error.message}`))
       socket.once('close', () => sockets.delete(socket))
       authenticate(socket, token).then(async () => {
-        const selection = ctx.agentDefaultModel.currentSelection()
         const stream = createTransport(socket, ctx, config.title ?? '麦麦')
         const fork = ctx.plugin({
           name: 'maibot-acp-connection',
-          apply(child) { acp.apply(child, { ...selection, stream }) },
+          apply(child) { applyDesktopACP(child, stream, owners) },
         })
         forks.add(fork)
         socket.once('close', () => {
