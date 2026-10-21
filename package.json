@@ -1,0 +1,38 @@
+{
+  "name": "dsh-maibot-bridge",
+  "version": "0.1.0",
+  "description": "在 dsh Desktop 中运行麦麦的 ACP 会话",
+  "type": "module",
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "transport.js",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "engines": {
+    "dsh": "^0.2.1-rc.2"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/dsh-acp": "^0.2.1-rc.2"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SengokuCola/dsh-maibot-bridge.git"
+  },
+  "homepage": "https://github.com/SengokuCola/dsh-maibot-bridge",
+  "peerDependenciesMeta": {
+    "@deepseek-ai/dsh-acp": {
+      "optional": true
+    }
+  }
+}

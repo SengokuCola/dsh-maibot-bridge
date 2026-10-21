@@ -1,0 +1,3 @@
+- insert:
+    - id: maibot-desktop-bridge
+      name: dsh-maibot-bridge
