@@ -12,7 +12,7 @@
 dsh plugin --profile desktop add https://github.com/SengokuCola/dsh-maibot-bridge/releases/download/v0.1.1/dsh-maibot-bridge-0.1.1.tgz
 ```
 
-仓库为私有时，下载需要仓库访问权限。也可在 Desktop 的「添加插件」中填写本地插件源码目录安装。
+仓库及 Release 安装包公开，无需 GitHub 登录即可下载。也可在 Desktop 的「添加插件」中填写本地插件源码目录安装。
 
 启动或重启 Desktop，然后在麦麦设置的「Agent连接」中选择：
 
